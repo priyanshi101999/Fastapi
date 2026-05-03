@@ -7,7 +7,7 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from .config import setting
 
-oauth_scheme = OAuth2PasswordBearer("auth/login")
+oauth_scheme = OAuth2PasswordBearer("login")
 
 SECRET_KEY = setting.secret_key
 ALGORITHM = setting.algorithm
