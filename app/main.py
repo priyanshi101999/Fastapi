@@ -17,14 +17,14 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://www.google.com"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
 )
 @app.get("/")
 def test():
-    return {"message": "Hello World"}
+    return {"message": "Hello World!!!"}
 
 app.include_router(post.router)
 app.include_router(user.router)
