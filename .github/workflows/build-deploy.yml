@@ -69,7 +69,7 @@ jobs:
       run: echo ${{ steps.docker_build.outputs.image_name }}
 
 
-  deploy
+  deploy:
     needs: [build]
     environment: production
     runs-on: ubuntu-latest
