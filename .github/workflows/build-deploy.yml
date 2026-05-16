@@ -2,7 +2,7 @@ name: build and deploy
 
 on: ["pull_request", "push"]
 
-job:
+jobs:
   job1:
     run_on: ubuntu-latest
     steps:
