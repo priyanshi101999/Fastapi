@@ -55,8 +55,8 @@ jobs:
     - name: print docker login status
       run: docker login
 
-    - name: set up buildx
-      uses: docker/setup-buildx-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
     
     - name: build and pushs
       uses: docker/build-push-action@v7
@@ -67,6 +67,8 @@ jobs:
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/fastapi:latest
         cache-from: type=registry,ref=user/app:buildcache
         cache-to: type=registry,ref=user/app:buildcache,mode=max
+        secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.MYTOKEN }}
 
     - name: print image name
       run: echo ${{ steps.docker_build.outputs.image_name }}
@@ -77,7 +79,10 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     steps:
-    - name: Deploy to production
+    - name: Checkout/pull code
+      uses: actions/checkout@v6
+
+    - name: Deploy to render
       uses: johnbeynon/render-deploy-action@v0.0.8
       with:
         service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
