@@ -3,7 +3,7 @@ name: build and deploy
 on: [ "pull_request", "push" ]
 
 jobs:
-  job1:
+  build:
     environment: testing
     env:
       DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
@@ -67,3 +67,20 @@ jobs:
 
     - name: print image name
       run: echo ${{ steps.docker_build.outputs.image_name }}
+
+
+  deploy
+    needs: [build]
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+          wait-for-success: true
+
+
+
+
