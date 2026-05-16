@@ -49,47 +49,40 @@ def new_post(post: schema.PostCreate, db : Session = Depends(get_db), current_us
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schema.Post)
 def get_post(id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     print("id:",type(id))
-    try:
-        # cursor.execute('SELECT * FROM public."Posts" WHERE id=%s', (id,))
-        # post = cursor.fetchone()
-        post = db.query(model.Post).filter(model.Post.id == id).first()
-        print(post)
+    # cursor.execute('SELECT * FROM public."Posts" WHERE id=%s', (id,))
+    # post = cursor.fetchone()
+    post = db.query(model.Post).filter(model.Post.id == id).first()
+    print(post)
        
-        if post == None:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with {id} not found")
-        return post
-    except Exception as error:
-        print("Error: ", error)
-        return {"error": error }
+    if post == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with {id} not found")
+    return post
+
 
    
 
 @router.delete("/{id}")
 def deletePost(id : int, db : Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
-    try:
-        # cursor.execute('DELETE FROM public."Posts" WHERE id= %s RETURNING*', (id,))
-        # deleted_post=cursor.fetchone()
-        # connect.commit()
 
-        post_query = db.query(model.Post).filter(model.Post.id ==id)
+    # cursor.execute('DELETE FROM public."Posts" WHERE id= %s RETURNING*', (id,))
+    # deleted_post=cursor.fetchone()
+    # connect.commit()
 
-        post = post_query.first()
+    post_query = db.query(model.Post).filter(model.Post.id ==id)
 
-        if post is None:
-            raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail= f"The post with id = {id} not found")
-        print("deleted post", post)
+    post = post_query.first()
 
-        if post.owner_id != current_user.id:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    if post is None:
+        raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail= f"The post with id = {id} not found")
+    print("deleted post", post)
+
+    if post.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
         
-        post_query.delete(synchronize_session=False)
-        db.commit()
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
-    
-    except Exception as error:
-        # connect.rollback()
-        print("Error:", error)
-        return { "error": error}
+    post_query.delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
 
 
 

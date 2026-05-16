@@ -1,0 +1,12 @@
+name: build and deploy
+
+on: ["pull_request", "push"]
+
+job:
+  job1:
+    run_on: ubuntu-latest
+    steps:
+      - name: pull code
+        uses: actions/checkout@v6
+      - name: say hi to me
+        run: echo "hello Priyanshi"
