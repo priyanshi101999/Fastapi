@@ -8,5 +8,12 @@ jobs:
     steps:
       - name: pull code
         uses: actions/checkout@v6
-      - name: say hi to me
-        run: echo "hello Priyanshi"
+      - name: install python version 3.11.9
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11.9"
+      - name: install pip
+        run: python -m pip --upgrade pip
+      - name: install requirements
+        run: pip install -r requirements.txt
+      
