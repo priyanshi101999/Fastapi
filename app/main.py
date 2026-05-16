@@ -24,7 +24,7 @@ app.add_middleware(
 )
 @app.get("/")
 def test():
-    return {"message": "Successfully deployed on render!!"}
+    return {"message": "Successfully deployed on render"}
 
 app.include_router(post.router)
 app.include_router(user.router)
